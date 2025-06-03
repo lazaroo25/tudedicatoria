@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Dedicatoria</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <audio autoplay loop>
+    <source src="assets/musica.mp3" type="audio/mpeg">
+    Tu navegador no soporta audio.
+  </audio>
+  <div class="container">
+    <h1 id="nombre"></h1>
+    <p id="mensaje" class="animado"></p>
+  </div>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    document.getElementById('nombre').textContent = "Para: " + params.get('nombre');
+    document.getElementById('mensaje').textContent = params.get('mensaje');
+  </script>
+</body>
+</html>
