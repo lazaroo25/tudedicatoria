@@ -10,7 +10,28 @@
     <source src="assets/musica.mp3" type="audio/mpeg">
     Tu navegador no soporta audio.
   </audio>
-  <button id="playPauseBtn">▶️ Reproducir</button>
+  <script>
+  const audio = document.getElementById('audioPlayer');
+  const btn = document.getElementById('playPauseBtn');
+
+  // Cuando cargue la página, intenta reproducir el audio (puede que el navegador bloquee)
+  window.addEventListener('load', () => {
+    audio.play().catch(() => {
+      // Si no puede reproducir automáticamente, cambia el texto del botón para que el usuario lo active
+      btn.textContent = '▶️ Reproducir';
+    });
+  });
+
+  btn.addEventListener('click', () => {
+    if (audio.paused) {
+      audio.play();
+      btn.textContent = '⏸️ Pausar';
+    } else {
+      audio.pause();
+      btn.textContent = '▶️ Reproducir';
+    }
+  });
+</script>
   <div class="container">
     <h1 id="nombre"></h1>
     <p id="mensaje" class="animado"></p>
