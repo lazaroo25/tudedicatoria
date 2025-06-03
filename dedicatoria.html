@@ -1,71 +1,104 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Dedicatoria</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tu Dedicatoria</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #fceabb, #f8b500);
+      color: #333;
+      text-align: center;
+      padding: 2rem;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      animation: glow 2s infinite alternate;
+      color: #ff3366;
+    }
+    p {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      animation: fadein 3s ease-in forwards;
+    }
+    #playPauseBtn {
+      font-size: 1.2rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      background-color: #ff3366;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    #playPauseBtn:hover {
+      background-color: #e62e5c;
+    }
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 10px #ff3366, 0 0 20px #ff3366;
+      }
+      to {
+        text-shadow: 0 0 20px #ff6699, 0 0 30px #ff6699;
+      }
+    }
+    @keyframes fadein {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
 </head>
 <body>
-  <audio autoplay loop>
-    <source src="assets/musica.mp3" type="audio/mpeg">
-    Tu navegador no soporta audio.
-  </audio>
-  <script>
-  const audio = document.getElementById('audioPlayer');
-  const btn = document.getElementById('playPauseBtn');
+
+  <h1>Tu dedicatoria para <span id="nombre"></span></h1>
+  <p id="mensaje"></p>
 
   <audio id="audioPlayer" loop>
-  <source src="assets/musica.mp3" type="audio/mpeg">
-  Tu navegador no soporta audio.
-</audio>
+    <source src="assets/musica.mp3" type="audio/mpeg" />
+    Tu navegador no soporta audio.
+  </audio>
 
-<button id="playPauseBtn">▶️ Reproducir</button>
+  <button id="playPauseBtn">▶️ Reproducir</button>
 
-<script>
-  const audio = document.getElementById('audioPlayer');
-  const btn = document.getElementById('playPauseBtn');
-
-  // Actualiza el texto del botón según el estado del audio
-  function updateButton() {
-    if (audio.paused) {
-      btn.textContent = '▶️ Reproducir';
-    } else {
-      btn.textContent = '⏸️ Pausar';
+  <script>
+    // Obtener parámetros de URL
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
     }
-  }
 
-  // Intenta reproducir el audio al cargar la página
-  window.addEventListener('load', () => {
-    audio.play().then(() => {
-      updateButton();
-    }).catch(() => {
-      // Si no se reproduce automáticamente, mantiene el botón para que el usuario inicie
+    const nombre = getQueryParam('nombre') || 'tu pareja';
+    const mensaje = getQueryParam('mensaje') || '¡Te quiero mucho!';
+
+    // Insertar texto en la página
+    document.getElementById('nombre').textContent = nombre;
+    document.getElementById('mensaje').textContent = mensaje;
+
+    const audio = document.getElementById('audioPlayer');
+    const btn = document.getElementById('playPauseBtn');
+
+    function updateButton() {
+      btn.textContent = audio.paused ? '▶️ Reproducir' : '⏸️ Pausar';
+    }
+
+    window.addEventListener('load', () => {
       updateButton();
     });
-  });
 
-  // Cambia el estado del audio cuando se clickea el botón
-  btn.addEventListener('click', () => {
-    if (audio.paused) {
-      audio.play();
-    } else {
-      audio.pause();
-    }
-    updateButton();
-  });
+    btn.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
+      updateButton();
+    });
 
-  // Actualiza el botón si el audio termina o pausa por otro motivo
-  audio.addEventListener('pause', updateButton);
-  audio.addEventListener('play', updateButton);
-</script>
-  <div class="container">
-    <h1 id="nombre"></h1>
-    <p id="mensaje" class="animado"></p>
-  </div>
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    document.getElementById('nombre').textContent = "Para: " + params.get('nombre');
-    document.getElementById('mensaje').textContent = params.get('mensaje');
+    audio.addEventListener('play', updateButton);
+    audio.addEventListener('pause', updateButton);
   </script>
+
 </body>
 </html>
