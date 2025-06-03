@@ -14,23 +14,49 @@
   const audio = document.getElementById('audioPlayer');
   const btn = document.getElementById('playPauseBtn');
 
-  // Cuando cargue la página, intenta reproducir el audio (puede que el navegador bloquee)
-  window.addEventListener('load', () => {
-    audio.play().catch(() => {
-      // Si no puede reproducir automáticamente, cambia el texto del botón para que el usuario lo active
+  <audio id="audioPlayer" loop>
+  <source src="assets/musica.mp3" type="audio/mpeg">
+  Tu navegador no soporta audio.
+</audio>
+
+<button id="playPauseBtn">▶️ Reproducir</button>
+
+<script>
+  const audio = document.getElementById('audioPlayer');
+  const btn = document.getElementById('playPauseBtn');
+
+  // Actualiza el texto del botón según el estado del audio
+  function updateButton() {
+    if (audio.paused) {
       btn.textContent = '▶️ Reproducir';
+    } else {
+      btn.textContent = '⏸️ Pausar';
+    }
+  }
+
+  // Intenta reproducir el audio al cargar la página
+  window.addEventListener('load', () => {
+    audio.play().then(() => {
+      updateButton();
+    }).catch(() => {
+      // Si no se reproduce automáticamente, mantiene el botón para que el usuario inicie
+      updateButton();
     });
   });
 
+  // Cambia el estado del audio cuando se clickea el botón
   btn.addEventListener('click', () => {
     if (audio.paused) {
       audio.play();
-      btn.textContent = '⏸️ Pausar';
     } else {
       audio.pause();
-      btn.textContent = '▶️ Reproducir';
     }
+    updateButton();
   });
+
+  // Actualiza el botón si el audio termina o pausa por otro motivo
+  audio.addEventListener('pause', updateButton);
+  audio.addEventListener('play', updateButton);
 </script>
   <div class="container">
     <h1 id="nombre"></h1>
